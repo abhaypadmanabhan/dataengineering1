@@ -1,0 +1,10 @@
+sources:
+  - name: jaffle_shop
+    database: dataengineeringpractice-464317
+    schema: dbtJaffleShap
+    tables:
+    - name: Customers
+    - name: orders
+    - name: items
+    - name: products
+    - name: supplies
