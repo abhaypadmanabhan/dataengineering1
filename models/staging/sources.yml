@@ -1,10 +1,13 @@
 sources:
-  - name: jaffle_shop
+  - name: olist
     database: dataengineeringpractice-464317
-    schema: dbtJaffleShap
+    schema: olist
     tables:
-    - name: Customers
-    - name: orders
-    - name: items
+    - name: customers
+    - name: geolocations
+    - name: order_payments
+    - name: product_catagory_name_translation
     - name: products
-    - name: supplies
+    - name: sellers
+    - name: items
+    - name: orders

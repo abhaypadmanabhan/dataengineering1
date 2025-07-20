@@ -1,0 +1,147 @@
+version: 2
+
+models:
+  - name: stg_olist__order
+    description: "Staging model for raw orders data; includes basic cleaning and type casting for order-level information."
+    columns:
+      - name: order_id
+        description: "Unique identifier for each order."
+        tests: [unique, not_null]
+      - name: customer_id
+        description: "Identifier linking to the customer who placed the order."
+        tests: [not_null]
+      - name: order_status
+        description: "Current status of the order (e.g., delivered, shipped, canceled)."
+        tests: [not_null]
+      - name: order_purchase_timestamp
+        description: "Timestamp when the order was placed."
+      - name: order_approved_at
+        description: "Timestamp when payment for the order was approved."
+      - name: order_delivered_carrier_date
+        description: "Timestamp when the order was handed over to the carrier."
+      - name: order_delivered_customer_date
+        description: "Timestamp when the order was delivered to the customer."
+      - name: order_estimated_delivery_date
+        description: "Estimated delivery date provided at order placement."
+
+  - name: stg_olist__order_item
+    description: "Staging model for individual items within orders; cleans item-level metrics and pricing."
+    columns:
+      - name: order_id
+        description: "Identifier for the order containing this item."
+        tests: [not_null]
+      - name: order_item_id
+        description: "Sequential number of the item within its order."
+        tests: [not_null]
+      - name: product_id
+        description: "Identifier for the product purchased."
+        tests: [not_null]
+      - name: seller_id
+        description: "Identifier for the seller fulfilling the item."
+      - name: shipping_limit_dateL
+        description: "Deadline date by which the seller must ship the item."
+      - name: price
+        description: "Price paid for the individual item."
+      - name: freight_value
+        description: "Freight cost associated with shipping the item."
+
+  - name: stg_olist__product
+    description: "Staging model for product catalog data; standardizes product attributes."
+    columns:
+      - name: product_id
+        description: "Unique identifier for each product."
+        tests: [unique, not_null]
+      - name: product_category_name
+        description: "Original product category label."
+        tests: [not_null]
+      - name: product_name_length
+        description: "Character count of the product name."
+      - name: product_description_length
+        description: "Character count of the product description."
+      - name: product_photos_qty
+        description: "Number of photos available for the product."
+      - name: product_weight_g
+        description: "Weight of the product in grams."
+      - name: product_length_cm
+        description: "Product package length in centimeters."
+      - name: product_height_cm
+        description: "Product package height in centimeters."
+      - name: product_width_cm
+        description: "Product package width in centimeters."
+
+  - name: stg_olist__payment
+    description: "Staging model for payment transactions; formats payment details per order."
+    columns:
+      - name: order_id
+        description: "Identifier of the order associated with this payment."
+        tests: [not_null]
+      - name: payment_sequential
+        description: "Sequence index of each payment attempt for an order."
+        tests: [not_null]
+      - name: payment_type
+        description: "Payment method used (e.g., credit_card, boleto)."
+        tests: [not_null]
+      - name: payment_installments
+        description: "Number of installments for the payment transaction."
+      - name: payment_value
+        description: "Amount paid in this transaction."
+
+  - name: stg_olist__seller
+    description: "Staging model for seller profile data; cleans location and identifier fields."
+    columns:
+      - name: seller_id
+        description: "Unique identifier for each seller."
+        tests: [unique, not_null]
+      - name: seller_zip_code_prefix
+        description: "ZIP code prefix corresponding to seller location."
+        tests: [not_null]
+      - name: seller_city
+        description: "City where the seller is located."
+      - name: seller_state
+        description: "State abbreviation for the seller location."
+
+  - name: stg_olist__customer
+    description: "Staging model for customer profile data; cleans customer identifiers and location."
+    columns:
+      - name: customer_id
+        description: "Unique identifier for each customer."
+        tests: [unique, not_null]
+      - name: customer_unique_id
+        description: "Hashed or anonymized identifier grouping multiple orders by the same customer."
+      - name: customer_zip_code_prefix
+        description: "ZIP code prefix corresponding to customer location."
+        tests: [not_null]
+      - name: customer_city
+        description: "City where the customer resides."
+      - name: customer_state
+        description: "State abbreviation for the customer location."
+
+  - name: stg_olist__product_category_name_translation
+    description: "Staging model mapping original category labels to English translations."
+    columns:
+      # The original snippet had a commented-out section and then a "columns" block with an
+      # incorrectly formatted test. This version assumes you want both columns defined
+      # and fixes the `not_null` test for `product_category_name` to be standard.
+      - name: product_category_name
+        description: "Original category label in Portuguese."
+        tests: [unique, not_null] # Corrected `not_null` format
+      - name: product_category_name_english
+        description: "Translated category label in English."
+        tests: [not_null]
+
+  - name: stg_olist__geolocation
+    description: "Staging model for geolocation data; standardizes location coordinates and codes."
+    columns:
+      - name: geolocation_zip_code_prefix
+        description: "ZIP code prefix used for mapping geographic data."
+        tests: [not_null]
+      - name: geolocation_lat
+        description: "Latitude coordinate."
+        tests: [not_null]
+      - name: geolocation_lng
+        description: "Longitude coordinate."
+        tests: [not_null]
+      - name: geolocation_city
+        description: "City name associated with the ZIP code."
+      - name: geolocation_state
+        description: "State abbreviation for the geolocation record."
