@@ -1,0 +1,13 @@
+version: 2
+
+models:
+  - name: stg_liquidity_forecasting__forecast_plan
+    columns:
+      - name: forecast_id
+        tests: [not_null, unique]
+      - name: due_date
+        tests: [not_null]
+      - name: direction
+        tests:
+          - accepted_values:
+              values: ['INFLOW','OUTFLOW']

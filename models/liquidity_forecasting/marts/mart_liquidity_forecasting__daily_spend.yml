@@ -1,0 +1,16 @@
+# models/liquidity_forecasting/marts/mart_liquidity_forecasting__daily_spend.yml
+
+version: 2
+
+models:
+  - name: mart_liquidity_forecasting__daily_spend
+    description: "Daily aggregated spend and transaction count for liquidity forecasting"
+    columns:
+      - name: date
+        description: "Transaction date"
+      - name: total_daily_spend
+        description: "Total amount spent on that date"
+      - name: transaction_count
+        description: "Number of transactions on that date"
+      - name: unique_merchants
+        description: "Count of unique merchants on that date"

@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: stg_liquidity_forecasting__transactions
+    description: "Cleaned Plaid transactions."
+    columns:
+      - name: actual_id
+        tests: [not_null, unique]
+      - name: business_id
+        tests: [not_null]
+      - name: post_date
+        tests: [not_null]
+      - name: amount
+        tests: [not_null]
