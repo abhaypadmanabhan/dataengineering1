@@ -1,0 +1,10 @@
+version: 2
+
+models:
+  - name: fct_liquidity_forecasting__liquidity_kpis
+    description: "Core liquidity KPIs—days of cash on hand, threshold breaches, variances."
+    columns:
+      - name: business_id
+        tests: [not_null]
+      - name: date_day
+        tests: [not_null]

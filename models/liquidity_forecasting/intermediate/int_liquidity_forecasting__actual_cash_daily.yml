@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_liquidity_forecasting__actual_cash_daily
+    description: "Daily aggregated actual cash movements from Plaid transactions."
+    columns:
+      - name: business_id
+        tests: [not_null]
+      - name: date_day
+        tests: [not_null]
+      - name: actual_cash_change
+        tests: [not_null]

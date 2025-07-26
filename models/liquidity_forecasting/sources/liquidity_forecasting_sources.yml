@@ -1,0 +1,80 @@
+version: 2
+
+sources:
+  - name: liquidity_forecasting
+    database: "{{ target.project }}"
+    schema: "liquidity_forecasting"
+
+    tables:
+      # -------------------------
+      # 1) Raw Plaid transactions
+      # -------------------------
+      - name: transactions_raw
+        description: "Raw Plaid transactions landed from GCS (CSV). Do not transform here."
+        loaded_at_field: ingest_ts
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
+        columns:
+          - name: actual_id
+            tests: [not_null, unique]
+          - name: business_id
+            tests: [not_null]
+          - name: post_date
+            tests: [not_null]
+          - name: amount
+            tests: [not_null]
+
+      # -------------------------
+      # 2) Raw forecast events (Pub/Sub)
+      # -------------------------
+      - name: forecast_events_raw
+        description: "Raw forecast events streamed from Pub/Sub (CREATE/UPDATE/CANCEL)."
+        loaded_at_field: ingest_ts
+        freshness:
+          warn_after: {count: 1, period: day}
+          error_after: {count: 7, period: day}
+        columns:
+          - name: event_id
+            tests: [not_null, unique]
+          - name: forecast_id
+            tests: [not_null]
+          - name: ingest_ts
+            tests: [not_null]
+      - name: forecast_plan_raw
+        identifier: forecast_plan_raw   # change only if your BQ table name is different
+        description: "Static CSV of simulated forecast plan (pre-streaming)."
+        loaded_at_field: ingest_ts       # if you don't have this col, remove freshness block
+        freshness:
+          warn_after: {count: 7, period: day}
+          error_after: {count: 30, period: day}
+        columns:
+          - name: forecast_id
+            tests: [not_null, unique]
+          - name: business_id
+            tests: [not_null]
+          - name: due_date
+            tests: [not_null]
+          - name: amount
+            tests: [not_null]
+      - name: cfg_opening_balances
+        identifier: cfg_opening_balances
+        description: "Opening balances pulled from Plaid (per business)"
+        columns:
+          - name: business_id
+            tests: [not_null, unique]
+          - name: opening_balance_date
+            tests: [not_null]
+          - name: opening_balance_amount
+            tests: [not_null]
+      - name: cfg_alert_policies
+        description: "Per-business alert thresholds and settings for liquidity alerts."
+        columns:
+          - name: business_id
+            tests: [not_null]
+          - name: min_cash_threshold
+            tests: [not_null]
+          - name: warn_days
+            tests: [not_null]
+          - name: active_flag
+            tests: [not_null]

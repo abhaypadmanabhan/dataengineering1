@@ -1,0 +1,6 @@
+version: 2
+models:
+  - name: dim_liquidity_forecasting__date
+    columns:
+      - name: date_day
+        tests: [not_null, unique]

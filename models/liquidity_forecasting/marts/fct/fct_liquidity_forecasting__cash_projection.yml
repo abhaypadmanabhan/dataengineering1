@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: fct_liquidity_forecasting__cash_projection
+    description: "Running actual and projected cash balances by business & scenario."
+    columns:
+      - name: business_id
+        tests: [not_null]
+      - name: date_day
+        tests: [not_null]
+      - name: balance_projected
+        tests: [not_null]

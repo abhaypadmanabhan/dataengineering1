@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_liquidity_forecasting__forecast_events_latest
+    description: "Latest non-cancelled forecast events per forecast_id."
+    columns:
+      - name: forecast_id
+        tests: [not_null, unique]
+      - name: business_id
+        tests: [not_null]
+      - name: due_date
+        tests: [not_null]

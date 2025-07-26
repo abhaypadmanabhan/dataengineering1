@@ -1,0 +1,52 @@
+version: 2
+
+models:
+  - name: rpt_liquidity_forecasting__cash_alerts
+    description: >
+      Final alert table for liquidity forecasting. Emits one RED (first future breach)
+      and all AMBER rows per business/scenario. If no breach is detected, returns a single GREEN
+      fallback row (lowest future balance). Driven by cfg_alert_policies.
+    columns:
+      - name: business_id
+        description: "Logical tenant/business."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('stg_liquidity_forecasting__cfg_alert_policies')
+              field: business_id
+      - name: scenario
+        description: "Forecast scenario key (base, best, worst…)."
+        tests: [not_null]
+      - name: date_day
+        description: "Date of the metric row."
+        tests: [not_null]
+      - name: severity
+        description: "RED | AMBER | GREEN"
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['RED', 'AMBER', 'GREEN']
+      - name: balance_projected
+        description: "Projected balance on date_day."
+      - name: est_days_cash_on_hand
+        description: "Estimated days of cash on hand at date_day."
+      - name: avg_daily_outflow
+        description: "Rolling average outflow (used for DOCH calc)."
+      - name: threshold_breach_flag
+        description: "Flag copied from KPI fct; indicates threshold breach (before de-dupe)."
+      - name: breach_today
+        description: "True if balance_projected < threshold on date_day."
+      - name: start_of_breach
+        description: "True if this is first RED day after a non-breach day."
+      - name: next_breach_date
+        description: "Next date when projected balance is below threshold."
+      - name: days_until_breach
+        description: "Days from date_day to next_breach_date."
+      - name: min_cash_threshold
+        description: "Policy threshold from cfg_alert_policies."
+      - name: warn_days
+        description: "Policy warn window from cfg_alert_policies."
+      - name: as_of_date
+        description: "Policy as_of_date (override or current_date)."
+      - name: alert_message
+        description: "Human-friendly alert text for Slack/Email/Looker."

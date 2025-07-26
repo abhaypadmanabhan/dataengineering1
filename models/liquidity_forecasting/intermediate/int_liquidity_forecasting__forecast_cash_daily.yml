@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: int_liquidity_forecasting__forecast_cash_daily
+    description: "Daily aggregated forecasted cash changes (signed) by business and scenario."
+    columns:
+      - name: business_id
+        tests: [not_null]
+      - name: date_day
+        tests: [not_null]
+      - name: forecast_cash_change
+        tests: [not_null]

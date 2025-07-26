@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: stg_liquidity_forecasting__forecast_events
+    description: "Cleaned forecast events from Pub/Sub"
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+      - name: forecast_id
+        tests: [not_null]
+      - name: ingest_ts_ts
+        tests: [not_null]

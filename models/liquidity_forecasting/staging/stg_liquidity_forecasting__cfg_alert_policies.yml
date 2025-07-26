@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: stg_liquidity_forecasting__cfg_alert_policies
+    description: "Cleaned/typed alert policy rows for each business/scenario."
+    columns:
+      - name: business_id
+        tests: [not_null]
+      - name: scenario
+        tests: [not_null]
+      - name: min_cash_threshold
+        tests: [not_null]
+      - name: warn_days
+        tests: [not_null]
+      - name: as_of_date_override
+        description: "If present, overrides CURRENT_DATE() for alert filtering."
+      - name: updated_at_ts
+        description: "When this policy row was last updated."
