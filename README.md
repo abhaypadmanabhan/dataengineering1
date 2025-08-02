@@ -10,7 +10,7 @@ Transform raw Plaid transaction data in BigQuery into analytics-ready tables for
 ---
 
 ## 🔗 Project Context
-This is part of the larger [Liquidity Forecasting Pipeline](https://github.com/abhaypadmanabhan/liquidity-forecasting-pipeline). That repo contains Plaid ingestion, Pub/Sub pipeline, and visualization.
+This is part of the larger [Liquidity Forecasting Pipeline](https://github.com/abhaypadmanabhan/liquidity-pipeline). That repo contains Plaid ingestion, Pub/Sub pipeline, and visualization.
 
 ---
 
